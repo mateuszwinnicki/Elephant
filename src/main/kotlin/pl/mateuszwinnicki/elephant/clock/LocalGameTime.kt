@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit
 
 class LocalGameTime(localTime: LocalTime) : Comparable<LocalGameTime> {
 
-    private val time: LocalTime = localTime.truncatedTo(ChronoUnit.MINUTES)
+    private val time = localTime.truncatedTo(ChronoUnit.MINUTES)
 
     constructor(hour: Int, minute: Int) : this(LocalTime.of(hour, minute))
 
@@ -19,6 +19,14 @@ class LocalGameTime(localTime: LocalTime) : Comparable<LocalGameTime> {
 
     fun isBefore(other: LocalGameTime): Boolean {
         return time.isBefore(other.time)
+    }
+
+    fun plusMinutes(minutes: Int): LocalGameTime {
+        return LocalGameTime(time.plusMinutes(minutes.toLong()))
+    }
+
+    fun plusHours(hours: Int): LocalGameTime {
+        return LocalGameTime(time.plusHours(hours.toLong()))
     }
 
     override fun toString(): String {

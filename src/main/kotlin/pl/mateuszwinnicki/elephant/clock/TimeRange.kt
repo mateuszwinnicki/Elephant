@@ -1,8 +1,8 @@
 package pl.mateuszwinnicki.elephant.clock
 
-class TimeRange(private val closedStart: LocalGameTime, private val openedEnd: LocalGameTime) {
+class TimeRange(val closedStart: LocalGameTime, val openedEnd: LocalGameTime) {
 
-    private val midnightBetween: Boolean = closedStart > openedEnd
+    private val midnightBetween = closedStart > openedEnd
 
     fun inRange(time: LocalGameTime): Boolean {
         if (midnightBetween) {
@@ -14,10 +14,6 @@ class TimeRange(private val closedStart: LocalGameTime, private val openedEnd: L
 
     fun endsWithStartOf(other: TimeRange): Boolean {
         return openedEnd.compareTo(other.closedStart) == 0
-    }
-
-    fun getClosedStart(): LocalGameTime {
-        return closedStart;
     }
 
     override fun toString(): String {

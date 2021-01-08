@@ -1,8 +1,6 @@
-package pl.mateuszwinnicki.rpg.clock
+package pl.mateuszwinnicki.elephant.clock
 
 import org.junit.jupiter.api.Test
-import pl.mateuszwinnicki.elephant.clock.LocalGameTime
-import pl.mateuszwinnicki.elephant.clock.TimeRange
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.test.fail

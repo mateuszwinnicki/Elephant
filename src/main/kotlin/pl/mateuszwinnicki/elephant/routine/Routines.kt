@@ -4,7 +4,7 @@ import pl.mateuszwinnicki.elephant.clock.LocalGameTime
 
 class Routines(routines: List<Routine>) {
 
-    private val routinesSorted: List<Routine> = routines.sortedBy { it.timeRange.getClosedStart() }
+    private val routinesSorted = routines.sortedBy { it.timeRange.closedStart }
 
     init {
         if (routinesSorted.isEmpty()) {
@@ -20,8 +20,8 @@ class Routines(routines: List<Routine>) {
         }
     }
 
-    fun getPositionForTime(time: LocalGameTime): Routine {
-        return routinesSorted.find { it.timeRange.inRange(time) } ?: throw Exception()
+    fun getPositionForTime(time: LocalGameTime): RoutinePosition {
+        return routinesSorted.find { it.timeRange.inRange(time) }?.position ?: throw IllegalStateException("There must be exactly one routine available among routines: $routinesSorted for requested time: $time")
     }
 
 }

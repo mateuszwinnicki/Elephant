@@ -1,7 +1,9 @@
 package pl.mateuszwinnicki.elephant.routine
 
-data class RoutinePosition(val position: String) {
+import pl.mateuszwinnicki.elephant.location.PlaceId
 
-    constructor() : this("none")
+data class RoutinePosition(val placeId: PlaceId) {
+
+    constructor() : this(PlaceId("none"))
 
 }
