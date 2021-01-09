@@ -33,4 +33,20 @@ class LocalGameTime(localTime: LocalTime) : Comparable<LocalGameTime> {
         return "LocalGameTime(time=${time.hour}:${time.minute})"
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as LocalGameTime
+
+        if (time != other.time) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return time?.hashCode() ?: 0
+    }
+
+
 }

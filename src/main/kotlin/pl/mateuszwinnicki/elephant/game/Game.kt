@@ -6,6 +6,7 @@ import pl.mateuszwinnicki.elephant.game.matchers.NpcPlaceMatcher
 import pl.mateuszwinnicki.elephant.location.PlaceId
 import pl.mateuszwinnicki.elephant.location.PlaceRepository
 import pl.mateuszwinnicki.elephant.npc.Npc
+import pl.mateuszwinnicki.elephant.npc.NpcId
 
 class Game(
     private val mainClock: MainClock = MainClock(LocalGameTime(0, 0)),
@@ -18,10 +19,16 @@ class Game(
         private const val STANDARD_MINUTES_WINDOW = 1
     }
 
-    private val registeredNpcs = mutableListOf<Npc>()
+    private val registeredNpcs = mutableMapOf<NpcId, Npc>()
 
     fun registerNpcs(vararg npcs: Npc) {
-        registeredNpcs.addAll(npcs)
+        npcs.forEach { npc ->
+            if (registeredNpcs.containsKey(npc.id)) {
+                throw NpcRegistrationException("Npc with id ${npc.id} was already registered")
+            }
+            registeredNpcs[npc.id] = npc
+            moveNpcToPositionWithCurrentClock(npc)
+        }
     }
 
     fun passTime(hours: Int = 0, minutes: Int = 0) {
@@ -39,10 +46,12 @@ class Game(
     //TODO: remove npcPlaceMatcher, NPC should "move" between positions itself, not by some external force
     private fun moveNpcsWithRoutines() {
         npcPlaceMatcher.clearPlacesFromNpcs()
-        registeredNpcs.forEach { npc ->
-            val positionForTime = npc.routines().getPositionForTime(mainClock.clock)
-            npcPlaceMatcher.addNpcToPlace(npc, positionForTime.placeId)
-        }
+        registeredNpcs.values.forEach(this@Game::moveNpcToPositionWithCurrentClock)
+    }
+
+    private fun moveNpcToPositionWithCurrentClock(npc: Npc) {
+        val positionForTime = npc.routines().getPositionForTime(mainClock.clock)
+        npcPlaceMatcher.addNpcToPlace(npc, positionForTime.placeId)
     }
 
     private fun moveClockForward() {
